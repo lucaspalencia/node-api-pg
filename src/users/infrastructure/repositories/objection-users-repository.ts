@@ -19,6 +19,16 @@ export class ObjectionUsersRepository extends UsersRepository {
 
   public async list(): Promise<User[]> {
     const users = await this.model.query()
-    return new UsersMapper(users).mapToUsers()
+    return UsersMapper.mapToUsers(users)
+  }
+
+  public async findById(id: number): Promise<User|undefined> {
+    const user = await this.model.query().findById(id)
+
+    if (user !== undefined) {
+      return UsersMapper.mapToUser(user)
+    }
+
+    return undefined
   }
 }

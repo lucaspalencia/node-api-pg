@@ -7,4 +7,6 @@ export abstract class UsersRepository {
   abstract create(user: User): Promise<void>
 
   abstract list(): Promise<User[]>
+
+  abstract findById(id: number): Promise<User|undefined>
 }

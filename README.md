@@ -45,7 +45,8 @@ make logs
 
 This command will boot:
 - Node API on [http://localhost:3000](http://localhost:3000) if `PORT` variable has not been set on .env file. If variable has been set, will boot API on `http://localhost:${PORT}`
-- PostgreSQL database using PORT 5432 with environments variables defined on `docker-compose.yml`. To change database name, just change it in both `docker-compose.yml` and `.env` files
+
+- PostgreSQL database on PORT 5432 with environments variables defined in `docker-compose.yml`. To change database name, just change it in both `docker-compose.yml` and `.env` files
 
 ## Users module
 

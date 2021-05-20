@@ -1,0 +1,13 @@
+require:
+  - ts-node/register
+  - tsconfig-paths/register
+  - reflect-metadata
+  - tests/setup.ts
+spec: tests/
+recursive: true
+exit: true
+colors: true
+diff: true
+full-trace: true
+extension:
+  - ts

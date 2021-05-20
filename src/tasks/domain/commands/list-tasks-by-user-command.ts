@@ -6,8 +6,8 @@ import { TasksRepository } from "#/tasks/domain/repositories/tasks-repository"
 import { UsersRepository } from "#/users/domain/repositories/users-repository"
 
 @injectable()
-export class CreateTaskCommand {
-  public onSuccess: (task: Task) => Promise<void> = noop
+export class ListTasksByUserCommand {
+  public onSuccess: (tasks: Task[]) => Promise<void> = noop
 
   public onUserNotFoundError: () => Promise<void> = noop
 
@@ -16,15 +16,15 @@ export class CreateTaskCommand {
     @inject(UsersRepository) private readonly usersRepository: UsersRepository
   ) {}
 
-  public async execute(task: Task, userId: number): Promise<void> {
+  public async execute(userId: number): Promise<void> {
     const user = await this.usersRepository.findById(userId)
 
     if (!user) {
       return this.onUserNotFoundError()
     }
 
-    const taskCreated = await this.repository.create(task, userId)
+    const tasks = await this.repository.listByUser(userId)
 
-    return this.onSuccess(taskCreated)
+    return this.onSuccess(tasks)
   }
 }

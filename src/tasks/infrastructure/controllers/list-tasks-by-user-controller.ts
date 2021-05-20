@@ -1,38 +1,36 @@
 import { StatusCodes } from "http-status-codes"
 import { Response } from "express"
 import { inject, injectable } from "inversify"
-import { Body, JsonController, Params, Post, Res } from "routing-controllers"
+import { JsonController, Params, Get, Res } from "routing-controllers"
 
 import { ApplicationErrorResponse } from "#/common/infrastructure/controllers/responses/application-error-response"
 import { Task } from "#/tasks/domain/entities/task"
-import { CreateTaskCommand } from "#/tasks/domain/commands/create-task-command"
+import { ListTasksByUserCommand } from "#/tasks/domain/commands/list-tasks-by-user-command"
 import { UserId } from "#/tasks/infrastructure/controllers/requests/user-id"
-import { CreateTaskRequest } from "#/tasks/infrastructure/controllers/requests/create-task-request"
 import { createTaskErrors } from "#/tasks/infrastructure/controllers/responses/create-task-errors"
-import { CreateTaskResponse } from "#/tasks/infrastructure/controllers/responses/create-task-response"
+import { ListTasksByUserResponse } from "#/tasks/infrastructure/controllers/responses/list-tasks-by-user-response"
 
 @injectable()
 @JsonController()
-export class CreateTaskController {
-  public constructor(@inject(CreateTaskCommand) private readonly command: CreateTaskCommand) {}
+export class ListTasksByUserController {
+  public constructor(@inject(ListTasksByUserCommand) private readonly command: ListTasksByUserCommand) {}
 
-  @Post("/tasks/:userId")
-  public async createTask(
-    @Body() req: CreateTaskRequest,
+  @Get("/tasks/:userId")
+  public async listTasksByUser(
     @Res() res: Response,
     @Params() params: UserId
   ): Promise<Response> {
     this.command.onSuccess = this.onSuccess(res)
     this.command.onUserNotFoundError = this.onUserNotFoundError(res)
 
-    await this.command.execute(req.toDomain(), params.userId)
+    await this.command.execute(params.userId)
 
     return res
   }
 
-  private onSuccess(res: Response): (task: Task) => Promise<void> {
-    return async (task: Task): Promise<void> => {
-      res.status(StatusCodes.CREATED).send(new CreateTaskResponse(task).toPlain())
+  private onSuccess(res: Response): (tasks: Task[]) => Promise<void> {
+    return async (tasks: Task[]): Promise<void> => {
+      res.status(StatusCodes.OK).send(new ListTasksByUserResponse(tasks).toPlain())
     }
   }
 

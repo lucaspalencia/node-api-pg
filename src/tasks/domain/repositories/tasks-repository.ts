@@ -4,5 +4,7 @@ import { Task } from "#/tasks/domain/entities/task"
 
 @injectable()
 export abstract class TasksRepository {
-  abstract create(task: Task, userId: number): Promise<void>
+  abstract create(task: Task, userId: number): Promise<Task>
+
+  abstract listByUser(userId: number): Promise<Task[]>
 }

@@ -66,6 +66,26 @@ POST to `/users` endpoint with request body such as:
 
 GET to `/users` endpoint will return all users on database
 
+## Tasks module
+
+Folder: ```/src/tasks```
+
+### Create task for a user
+
+POST to `/tasks/${USER_ID}` endpoint with request body such as:
+```json
+{
+	"title": "Task tittle",
+	"description": "Task description",
+	"status": ["to_do", "in_progress", "on_review", "ready_for_release", "done"],
+	"dueDate": "2021-05-20T18:00:00.000Z"
+}
+```
+
+### List user tasks
+
+GET to `/tasks/${USER_ID}` endpoint will return user tasks
+
 ## Migrations
 
 For new migrations, just add them on `migrations` folder with file name as `time_action_entity_type`. For example: `20210517211000_create_users_table.ts`

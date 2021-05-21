@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsNumber } from "class-validator"
 
-export class UserId {
+export class Id {
   @IsNotEmpty()
   @IsNumber()
-  public userId!: number
+  public id!: number
 }

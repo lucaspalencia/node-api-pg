@@ -29,4 +29,25 @@ export class ObjectionTasksRepository extends TasksRepository {
 
     return TasksMapper.mapToTasks(tasks)
   }
+
+  public async findById(id: number): Promise<Task|undefined> {
+    const task = await this.model.query().findById(id)
+
+    if (task !== undefined) {
+      return TasksMapper.mapToTask(task)
+    }
+
+    return undefined
+  }
+
+  public async update(task: Task, taskId: number): Promise<Task> {
+    const taskUpdated = await this.model.query().patchAndFetchById(taskId, {
+      title: task.title,
+      description: task.description,
+      status: task.status,
+      dueDate: task.dueDate,
+    })
+
+    return TasksMapper.mapToTask(taskUpdated)
+  }
 }

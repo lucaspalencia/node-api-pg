@@ -9,7 +9,7 @@ import { UpdateTaskCommand } from "#/tasks/domain/commands/update-task-command"
 import { Id } from "#/tasks/infrastructure/controllers/requests/id"
 import { UpdateTaskRequest } from "#/tasks/infrastructure/controllers/requests/update-task-request"
 import { tasksErrorsResponse } from "#/tasks/infrastructure/controllers/responses/tasks-errors-response"
-import { CreateTaskResponse } from "#/tasks/infrastructure/controllers/responses/create-task-response"
+import { UpdateTaskResponse } from "#/tasks/infrastructure/controllers/responses/update-task-response"
 
 @injectable()
 @JsonController()
@@ -32,7 +32,7 @@ export class UpdateTaskController {
 
   private onSuccess(res: Response): (task: Task) => Promise<void> {
     return async (task: Task): Promise<void> => {
-      res.status(StatusCodes.CREATED).send(new CreateTaskResponse(task).toPlain())
+      res.status(StatusCodes.CREATED).send(new UpdateTaskResponse(task).toPlain())
     }
   }
 

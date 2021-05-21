@@ -72,19 +72,30 @@ Folder: ```/src/tasks```
 
 ### Create task for a user
 
-POST to `/tasks/${USER_ID}` endpoint with request body such as:
+POST to `/users/${USER_ID}/tasks` endpoint with request body such as:
 ```json
 {
-	"title": "Task tittle",
-	"description": "Task description",
-	"status": ["to_do", "in_progress", "on_review", "ready_for_release", "done"],
-	"dueDate": "2021-05-20T18:00:00.000Z"
+  "title": "Task tittle",
+  "description": "Task description",
+  "status": ["to_do", "in_progress", "on_review", "ready_for_release", "done"],
+  "dueDate": "2021-05-20T18:00:00.000Z"
+}
+```
+
+### Update task
+PUT to `/tasks/${TASK_ID}` endpoint with request body such as:
+```json
+{
+  "title": "Task tittle",
+  "description": "Task description",
+  "status": ["to_do", "in_progress", "on_review", "ready_for_release", "done"],
+  "dueDate": "2021-05-20T18:00:00.000Z"
 }
 ```
 
 ### List user tasks
 
-GET to `/tasks/${USER_ID}` endpoint will return user tasks
+GET to `/users/${USER_ID}/tasks` endpoint will return user tasks
 
 ## Migrations
 

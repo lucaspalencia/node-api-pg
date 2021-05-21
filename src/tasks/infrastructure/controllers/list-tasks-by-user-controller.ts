@@ -6,8 +6,8 @@ import { JsonController, Params, Get, Res } from "routing-controllers"
 import { ApplicationErrorResponse } from "#/common/infrastructure/controllers/responses/application-error-response"
 import { Task } from "#/tasks/domain/entities/task"
 import { ListTasksByUserCommand } from "#/tasks/domain/commands/list-tasks-by-user-command"
-import { UserId } from "#/tasks/infrastructure/controllers/requests/user-id"
-import { createTaskErrors } from "#/tasks/infrastructure/controllers/responses/create-task-errors"
+import { Id } from "#/tasks/infrastructure/controllers/requests/id"
+import { tasksErrorsResponse } from "#/tasks/infrastructure/controllers/responses/tasks-errors-response"
 import { ListTasksByUserResponse } from "#/tasks/infrastructure/controllers/responses/list-tasks-by-user-response"
 
 @injectable()
@@ -15,15 +15,15 @@ import { ListTasksByUserResponse } from "#/tasks/infrastructure/controllers/resp
 export class ListTasksByUserController {
   public constructor(@inject(ListTasksByUserCommand) private readonly command: ListTasksByUserCommand) {}
 
-  @Get("/tasks/:userId")
+  @Get("/users/:id/tasks")
   public async listTasksByUser(
     @Res() res: Response,
-    @Params() params: UserId
+    @Params() params: Id
   ): Promise<Response> {
     this.command.onSuccess = this.onSuccess(res)
     this.command.onUserNotFoundError = this.onUserNotFoundError(res)
 
-    await this.command.execute(params.userId)
+    await this.command.execute(params.id)
 
     return res
   }
@@ -37,7 +37,7 @@ export class ListTasksByUserController {
   private onUserNotFoundError(res: Response): () => Promise<void> {
     return async (): Promise<void> => {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(
-        new ApplicationErrorResponse(createTaskErrors.userNotFound).toPlain()
+        new ApplicationErrorResponse(tasksErrorsResponse.userNotFound).toPlain()
       )
     }
   }
